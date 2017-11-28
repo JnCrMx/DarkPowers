@@ -2,6 +2,7 @@ package de.jcm.forge.darknesslight.client.render;
 
 import org.lwjgl.opengl.GL11;
 
+import de.jcm.forge.darknesslight.DarknessVsLight;
 import de.jcm.forge.darknesslight.client.model.ModelDarkSword;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainerCreative;
@@ -10,6 +11,8 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.model.AdvancedModelLoader;
+import net.minecraftforge.client.model.IModelCustom;
 
 public class RenderDarkSword implements IItemRenderer
 {
@@ -54,9 +57,12 @@ public class RenderDarkSword implements IItemRenderer
 				GL11.glRotatef(100.0F, 0.0F, 1.0F, 0.0F);
 				GL11.glRotatef(-5.0F, 1.0F, 0.0F, 0.0F);
 			}
+			GL11.glRotated(90, 1.0, 0.0, 0.0);
 			
-			Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/entity/beacon_beam.png"));
-			new ModelDarkSword().render(Minecraft.getMinecraft().renderViewEntity, 100, 100, 1000, 100, 100, 1);
+			IModelCustom model=AdvancedModelLoader.loadModel(new ResourceLocation(DarknessVsLight.MODID, "obj/dark_sword.obj"));
+			
+			Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(DarknessVsLight.MODID, "textures/gui/red.png"));
+			model.renderAll();
 			
 			GL11.glPopMatrix();
 		}
