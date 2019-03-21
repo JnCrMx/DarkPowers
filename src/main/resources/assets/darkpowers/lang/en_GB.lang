@@ -1,0 +1,113 @@
+tile.null.name=unknown Block
+item.null.name=unknown Item
+
+tile.ritual_table.name=Altar
+tile.rune_empty.name=empty Rune
+tile.rune_opening.name=Rune of Opening
+tile.rune_holding.name=Rune of Holding
+tile.rune_binding.name=Rune of Binding
+tile.rune_invitation.name=Rune of Invitation
+tile.darkness.name=Block of Darkness
+
+item.darkness_ingot.name=Darkness-Ingot
+item.dark_sword.name=Sword of Darkness
+item.book_of_dark_myths.name=Book of Dark Myths
+item.book_of_dark_myths.part.name=Book of Dark Myths (Part %1$s of %2$s)
+
+itemGroup.DarkPowersDarkness=DarkPowers: Darkness
+
+ritual.connection.name=Verbindung der Dunkelheit
+ritual.connection.text.1=Wer ich bin?
+ritual.connection.text.2=Warum ich komme?
+ritual.connection.text.3=Was ich machen werde?
+ritual.connection.text.4=Du weißt es...
+ritual.connection.text.5=Du hast mich gerufen...
+ritual.connection.text.6=Du kennst mich...
+ritual.connection.text.7=Du siehst mich jeden Tag...
+ritual.connection.text.8=...und nun willst du es versuchen?
+ritual.connection.text.9=Nun...
+ritual.connection.text.10=...%1$s...
+ritual.connection.text.11=Ich hoffe, du bist stark genug, meine Kräfte aufzunehmen...
+ritual.connection.text.12=Ich hoffe, du kannst alles andere loslassen...
+ritual.connection.text.13=Ich hoffe, du kannst widerstehen zuübertreiben...
+ritual.connection.text.14=Ich hoffe, du kannst dich öffnen...
+ritual.connection.text.15=Ich hoffe, du kannst diese letzte Prüfung bestehen...
+ritual.connection.text.16=Ich hoffe, du bist nun leer und konzentriert zu gleich...
+ritual.connection.text.17=Ich hoffe, du beginnst zu denken wie ich...
+ritual.connection.text.18=Ich hoffe, du beginnst zu fühlen wie ich...
+ritual.connection.text.19=Ich hoffe, du beginnst zu sein wie ich...
+ritual.connection.text.20=Ich hoffe, du beginnst ich zu sein...
+ritual.connection.text.21=...ich, die Dunkelheit...
+ritual.connection.text.22=...du, %1$s...
+ritual.connection.leave.1=Du möchstest gehen?
+ritual.connection.leave.2=So soll es sein...
+ritual.connection.leave.3=Beachte jedoch: Du kannst der Dunkelheit nicht entrinnen.
+ritual.connection.leave.4=Irgendwann wirst du meine Kräfte brauchen...
+ritual.connection.leave.5=Irgendwann wirst du wiederkommen...
+ritual.connection.leave.6=Irgendwann wirst du es erneut versuchen...
+ritual.connection.leave.7=Und irgendwann wirst du es schaffen...
+ritual.connection.leave.8=Bis irgendwann...
+ritual.connection.sucess.1=Hallo...
+ritual.connection.sucess.2=Hallo, %1$s...
+ritual.connection.sucess.3=Nun ist es vollbracht!
+ritual.connection.sucess.4=Wir sind eins!
+ritual.connection.sucess.5=Wir sind die Dunkelheit!
+
+ritual.summoning.name=Beschwörung der Dunkelheit
+ritual.summoning.text.1=Du!
+ritual.summoning.text.2=DU!
+ritual.summoning.text.3=Wer wagt es mich zu rufen?
+ritual.summoning.text.4=Aha, %1$s...
+ritual.summoning.text.5=Soll ich dich einfach töten?
+ritual.summoning.text.6=Nein, das wäre langweilig!
+ritual.summoning.text.7=Also, ich gebe dir eine Chance:
+ritual.summoning.text.8=Möchtest du mir dienen...
+ritual.summoning.text.9=Oder lieber sterben?
+ritual.summoning.text.10=Sei mein Magier!
+ritual.summoning.text.11=Kämpfe für mich!
+ritual.summoning.text.12=Kämpfe für die Dunkelheit!
+ritual.summoning.text.13=Komm zu mir!
+ritual.summoning.text.14=Diene mir!
+ritual.summoning.text.15=Diene der Dunkelheit!
+ritual.summoning.no.1=Tja...
+ritual.summoning.no.2=Es ist deine Entscheidung...
+ritual.summoning.no.3=Und nun...
+ritual.summoning.no.4=STIRB!
+ritual.summoning.yes.1=Gut, %1$s...
+ritual.summoning.yes.2=Gute Entscheidung...
+ritual.summoning.yes.3=Du bist nun mein Diener!
+ritual.summoning.yes.4=Willenlos!
+ritual.summoning.yes.5=Bis zum Ende der Zeit!
+ritual.summoning.leave.1=Hast du etwa Angst?
+ritual.summoning.leave.2=Naja...
+ritual.summoning.leave.3=Ich werde dich verschonen!
+ritual.summoning.leave.4=Aber wag es ja nicht mich erneut zu beschwören!
+
+messages.rune.activated=You activated this Rune with your own blood.
+messages.rune.active=This Rune is already active.
+
+key.darkpowers.category=DarkPowers
+
+key.menu.desc=Show Skill GUI
+key.skill0.desc=Skill 1
+key.skill1.desc=Skill 2
+key.skill2.desc=Skill 3
+key.skill3.desc=SKill 4
+
+skill.jump.name=Shadow Jump
+skill.jump.description=Use the force of Darkness to accelerate forward and jump.
+skill.teleport.name=Teleport
+skill.teleport.description=Fade into Darkness and appear at a different location.
+skill.protection.name=Protection of Darkness
+skill.protection.description=Ask Darkness to protect you from any physical damage for several hits.
+skill.dark_dome.name=Dark Dome
+skill.dark_dome.description=Create a dome of raw Darkness around you which boosts you and blinds enemies.
+skill.eye_darkness.name=Eye of Darkness
+skill.eye_darkness.description=Enchants your eyes and let them see in absolute Darkness.
+
+gui.unlock.enough=Unlock for §a%1$s§r Dark Fragments
+gui.unlock.enough.sg=Unlock for §a%1$s§r Dark Fragment
+gui.unlock.not_enough=Unlock for §c%1$s§r Dark Fragments
+gui.unlock.not_enough.sg=Unlock for §c%1$s§r Dark Fragment
+gui.passive.enable=§aEnable§r %1$s
+gui.passive.disable=§cDisable§r %1$s

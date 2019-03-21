@@ -1,0 +1,74 @@
+		Start
+		||
+		\/
+		find Books of Darkness
+		||
+		\/
+		find Rune of Opening; craft Altar
+		||
+		\/
+		perform Ritual of Collision => enter Dark Dimension				Any Ritual is cancelable until some point and therefore looks like this:
+		||															
+		\/																	+-->Ritual of <insert cool name here>
+		collect a few Essences of Darkness									|	||			||		||		||
+		||																	|	\/			\/		\/		\/
+		\/																	+---cancel		A		B		etc.
+		craft Rune of Invitation
+		||
+		\/
+		perform Ritual of Summoning => summon Darkness
+					||							||
+					\/							\/
+					resistance<------------+	submission
+					||					   |		||
+					\/					   |		\/
+					fight Darkness		   |		.....................
+					||			||		   |		.Servant of Darkness.
+					\/			\/		   +------+	.....................
+		death<------defeat		___victory____	  |					||
+								|| 			||	  |					\/
+	  +----------+				\/			\/	  +-----------------complete missions
+	  |apocalypse|<-unbalance<--no mercy	mercy					||
+	  +----------+							||						\/
+											\/						craft Rune of Holding
+											+----------------+		||
+			   receive special equipment<---|Lord of Darkness|		\/
+											+----------------+		Ritual of Proof I -> Trial of Strength
+																	||
+	death<------++==================================================++
+				||
+				\/
+				..................
+				.Mage of Darkness.---->special abilities & energy
+				..................
+				||
+				\/<---------------------------------------------------------------------------------+
+				complete missions--->level up--->better abilities									|
+				||				|																	|
+				\/				+---------------------------+										|
+				craft Rune of Binding						|										|
+				||											+-->summon Light						|
+				\/												||									|
+	death<------Ritual of Proof II -> Trial of Trust			\/									|
+				||												fight Light--->defeat--->death		|
+				\/												||									|
+				craft Core of Everything						\/									|
+				||									   			victory								|
+				\/												||	||								|
+				perform Ritual of Connection					\/	++==============++				|
+				||												no mercy			||				|
+				\/												||					\/				|
+				become one with Darkness						\/					mercy			|
+				||												+----------+		||				|
+				\/												|apocalypse|		\/				|
+				+--------+										+----------+		+----------------+
+				|Darkness|--->even more, better abilities							|Mage of Darkness|
+				+--------+									special equipment<------| & Lord of Light|
+			(	|| (optional and not recommended)			)						+----------------+
+		   (	\/											 )
+		  (		fight final boss Light to start apocalypse	  )
+		  (		||											  )
+		  (		\/											  )
+		  (		+----------+								  )
+		   (	|apocalypse|								 )
+			(	+----------+								)

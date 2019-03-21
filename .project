@@ -16,6 +16,11 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>.link1</name>
+			<type>2</type>
+			<location>C:/Users/User/.gradle/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.4.1614-1.7.10/start</location>
+		</link>
+		<link>
 			<name>lib</name>
 			<type>2</type>
 			<location>D:/Projects/Minecraft/Forge/DarkPowers/JCMLib/src</location>
