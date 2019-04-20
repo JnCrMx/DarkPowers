@@ -63,6 +63,8 @@ public class PlayerData implements IExtendedEntityProperties
 	private ClientEffect clientEffect;
 	@SideOnly(Side.CLIENT)
 	private int clientEffectTicks;
+	
+	private int raytraceTicks;
 
 	@SideOnly(Side.CLIENT)
 	public ClientEffect getClientEffect()
@@ -86,6 +88,16 @@ public class PlayerData implements IExtendedEntityProperties
 	public void setClientEffectTicks(int clientEffectTicks)
 	{
 		this.clientEffectTicks = clientEffectTicks;
+	}
+	
+	public int getRaytraceTicks()
+	{
+		return raytraceTicks;
+	}
+
+	public void setRaytraceTicks(int raytraceTicks)
+	{
+		this.raytraceTicks = raytraceTicks;
 	}
 
 	public PlayerData()

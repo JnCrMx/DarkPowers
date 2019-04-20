@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import de.jcm.darkpowers.PlayerData.DarkRole;
 import de.jcm.darkpowers.client.ClientEffect;
+import de.jcm.darkpowers.entity.projectile.EntityBlackArrow;
 import de.jcm.darkpowers.network.PacketClientEffect;
 import de.jcm.darkpowers.network.PacketDispatcher;
 import de.jcm.darkpowers.network.PacketSyncDarkPlayerData;
@@ -16,12 +17,14 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.EntityDamageSource;
 import net.minecraft.world.World;
 
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.player.AchievementEvent;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -41,6 +44,7 @@ import cpw.mods.fml.relauncher.Side;
 public abstract class CommonProxy implements IGuiHandler
 {
 	private HashMap<UUID, PlayerData> temps=new HashMap<UUID, PlayerData>();
+	public HashMap<Integer, Integer> blackArrowKills = new HashMap<>();
 
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
@@ -48,29 +52,29 @@ public abstract class CommonProxy implements IGuiHandler
 		DarkPowers.logger.info(ID, new Exception("debug stack trace"));
 		return null;
 	}
-	
+
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
-	{		
+	{
 		DarkPowers.logger.info(ID, new Exception("debug stack trace"));
 		return null;
 	}
-	
+
 	public void preInit(FMLPreInitializationEvent e)
 	{
 		DarkPowers.logger.info("Common proxy pre init");
 	}
-	
+
 	public void init(FMLInitializationEvent e)
 	{
 		DarkPowers.logger.info("Common proxy init");
 	}
-	
+
 	public void postInit(FMLPostInitializationEvent e)
 	{
 		DarkPowers.logger.info("Common proxy post init");
 	}
-	
+
 	@SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = false)
 	public void onEntityConstruct(EntityConstructing event)
 	{
@@ -85,14 +89,14 @@ public abstract class CommonProxy implements IGuiHandler
 			}
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void onTick(TickEvent.ServerTickEvent event)
 	{
 		if ((Minecraft.getMinecraft().isSingleplayer() && event.side==Side.CLIENT) || event.side == Side.SERVER) if (event.phase == Phase.START)
 		{
 			List list=MinecraftServer.getServer().getEntityWorld().playerEntities;
-			
+
 			for (Object object : list)
 			{
 				EntityPlayerMP player=(EntityPlayerMP) object;
@@ -100,7 +104,7 @@ public abstract class CommonProxy implements IGuiHandler
 				{
 					PlayerData data=PlayerData.get(player);
 					if(data.getRole()==DarkRole.MAGE || data.getRole()==DarkRole.DARKNESS)
-					{							
+					{
 						if(data.getEnergy()<10)
 						{
 							player.addPotionEffect(new PotionEffect(9,100,0));
@@ -113,7 +117,7 @@ public abstract class CommonProxy implements IGuiHandler
 						{
 							player.addPotionEffect(new PotionEffect(18,100,4));
 						}
-						
+
 						long time=player.worldObj.getTotalWorldTime();
 						if(time%20==0)
 						{
@@ -122,11 +126,11 @@ public abstract class CommonProxy implements IGuiHandler
 								int x=(int) player.posX;
 								int y=(int) player.posY;
 								int z=(int) player.posZ;
-								
+
 								int toAdd=15-player.worldObj.getBlockLightValue(x, y, z);
-								
+
 								data.setEnergy(data.getEnergy()+toAdd);
-								
+
 								if(toAdd>0)
 									data.sync();
 							}
@@ -137,14 +141,18 @@ public abstract class CommonProxy implements IGuiHandler
 
 							data.sync();
 						}
+						if(data.getRaytraceTicks()>0)
+						{
+							data.setRaytraceTicks(data.getRaytraceTicks()-1);
+						}
 					}
 				}
 			}
 		}
 	}
-	
+
 	public abstract EntityPlayer getPlayerEntity(MessageContext ctx);
-	
+
 	@SubscribeEvent
 	public void onPlayerLeft(PlayerLoggedOutEvent event)
 	{
@@ -152,14 +160,14 @@ public abstract class CommonProxy implements IGuiHandler
 		PacketSyncDarkPlayerData pack=new PacketSyncDarkPlayerData(event.player, data);
 		PacketDispatcher.sendToAll(pack);
 	}
-	
+
 	@SubscribeEvent
 	public void onPlayerJoin(PlayerEvent.PlayerChangedDimensionEvent event)
 	{
 		PacketSyncDarkPlayerData pack=new PacketSyncDarkPlayerData();
 		PacketDispatcher.sendToServer(pack);
 	}
-	
+
 	@SubscribeEvent
 	public void onPlayerJoin(EntityJoinWorldEvent event)
 	{
@@ -169,17 +177,39 @@ public abstract class CommonProxy implements IGuiHandler
 			PacketDispatcher.sendToServer(pack);
 		}
 	}
-	
+
 	@SubscribeEvent
-	public void onPlayerDies(LivingDeathEvent event)
+	public void onLivingDeath(LivingDeathEvent event)
 	{
 		if(event.entity instanceof EntityPlayer)
 		{
 			PlayerData data=PlayerData.get((EntityPlayer) event.entity);
 			temps.put(event.entity.getUniqueID(), data);
 		}
+		if(!event.entityLiving.worldObj.isRemote)
+		{
+			if(event.source instanceof EntityDamageSource)
+			{
+				EntityDamageSource source = (EntityDamageSource) event.source;
+				if(source.getSourceOfDamage() instanceof EntityBlackArrow)
+				{
+					EntityBlackArrow arrow = (EntityBlackArrow) source.getSourceOfDamage();
+
+					int kills = blackArrowKills.getOrDefault(arrow.getEntityId(), 0)+1;
+					blackArrowKills.put(arrow.getEntityId(), kills+1);
+
+					if(kills>=6)
+					{
+						if(arrow.getOwner()!=null)
+						{
+							arrow.getOwner().triggerAchievement(DarkPowers.blackArrowMultikillAchievement);
+						}
+					}
+				}
+			}
+		}
 	}
-	
+
 	@SubscribeEvent
 	public void onPlayerAttack(LivingAttackEvent event)
 	{
@@ -187,7 +217,7 @@ public abstract class CommonProxy implements IGuiHandler
 		{
 			EntityPlayerMP player = (EntityPlayerMP) event.entity;
 			PlayerData data=PlayerData.get(player);
-			
+
 			int remainingHits = data.getRemainingBarrierHits();
 			if(!event.source.canHarmInCreative() && remainingHits>0)
 			{
@@ -196,35 +226,46 @@ public abstract class CommonProxy implements IGuiHandler
 					data.setRemainingBarrierHits(remainingHits-1);
 					data.sync();
 					player.hurtResistantTime = 20;
-					
+
 					player.worldObj.playSoundAtEntity(player, DarkPowers.MODID+":"+"darkShieldBlock", 1.0f, 1.0f);
 				}
-				
-				DarkPowers.wrapper.sendToAllAround(new PacketClientEffect(player, ClientEffect.BARRIER_BLOCK, remainingHits), 
-					new TargetPoint(player.dimension, player.posX, player.posY, player.posZ, 
+
+				DarkPowers.wrapper.sendToAllAround(new PacketClientEffect(player, ClientEffect.BARRIER_BLOCK, remainingHits),
+					new TargetPoint(player.dimension, player.posX, player.posY, player.posZ,
 						MinecraftServer.getServer().getConfigurationManager().getEntityViewDistance()));
-				
+
 				event.setCanceled(true);
 			}
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void onPlayerRespawns(PlayerRespawnEvent event)
 	{
-		
 		if(temps.containsKey(event.player.getUniqueID()))
 		{
 			PlayerData data=temps.get(event.player.getUniqueID());
 			PlayerData data2=PlayerData.get(event.player);
-			
+
 			NBTTagCompound tag=new NBTTagCompound();
 			data.saveNBTData(tag);
 			data2.loadNBTData(tag);
-			
+
 			data2.sync();
-			
+
 			temps.remove(event.player.getUniqueID());
+		}
+	}
+
+	@SubscribeEvent
+	public void onAchievement(AchievementEvent event)
+	{
+		if(!event.entityPlayer.worldObj.isRemote)
+		{
+			if(event.achievement==DarkPowers.blackArrowMultikillAchievement)
+			{
+				//TODO: give skin item
+			}
 		}
 	}
 }

@@ -104,6 +104,8 @@ skill.dark_dome.name=Dark Dome
 skill.dark_dome.description=Create a dome of raw Darkness around you which boosts you and blinds enemies.
 skill.eye_darkness.name=Eye of Darkness
 skill.eye_darkness.description=Enchants your eyes and let them see in absolute Darkness.
+skill.black_arrow.name=Black Arrow
+skill.black_arrow.description=Fly with enormous speed into the block you are looking at and deal damage to every living you hit.
 
 gui.unlock.enough=Unlock for §a%1$s§r Dark Fragments
 gui.unlock.enough.sg=Unlock for §a%1$s§r Dark Fragment
@@ -111,3 +113,6 @@ gui.unlock.not_enough=Unlock for §c%1$s§r Dark Fragments
 gui.unlock.not_enough.sg=Unlock for §c%1$s§r Dark Fragment
 gui.passive.enable=§aEnable§r %1$s
 gui.passive.disable=§cDisable§r %1$s
+
+achievement.black_arrow_multikill=May the dragon consume you
+achievement.black_arrow_multikill.desc=Kill 6 livings with one use of Black Arrow.

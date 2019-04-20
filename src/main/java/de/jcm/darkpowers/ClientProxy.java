@@ -7,6 +7,7 @@ import de.jcm.darkpowers.PlayerData.DarkRole;
 import de.jcm.darkpowers.client.ClientEffect;
 import de.jcm.darkpowers.client.render.EntityRendererDark;
 import de.jcm.darkpowers.client.render.RenderPlayerDark;
+import de.jcm.darkpowers.entity.projectile.EntityBlackArrow;
 import de.jcm.darkpowers.gui.GuiEnergyOverlay;
 import de.jcm.darkpowers.gui.GuiSkillOverlay;
 import de.jcm.darkpowers.gui.GuiSkills;
@@ -42,56 +43,57 @@ import api.player.render.RenderPlayerAPI;
 public class ClientProxy extends CommonProxy
 {
 	public static KeyBinding[] keyBindings;
-	
+
 	public GuiSkillOverlay guiSkills;
 	public GuiEnergyOverlay guiEnergyOverlay;
-	
+
 	public boolean renderDark;
 	public TileEntityDarkDome renderDome;
-	
+	public EntityBlackArrow blackArrowCamera;
+
 	@Override
 	public void preInit(FMLPreInitializationEvent e)
 	{
 		super.preInit(e);
-		
+
 		DarkPowers.logger.info("Client proxy pre init");
-		
+
 		RenderPlayerAPI.register(DarkPowers.MODID, RenderPlayerDark.class);
 	}
-	
+
 	@Override
 	public void init(FMLInitializationEvent e)
 	{
 		super.init(e);
-		
+
 		DarkPowers.logger.info("Client proxy init");
-		
+
 		FMLCommonHandler.instance().bus().register(this);
 		MinecraftForge.EVENT_BUS.register(this);
-		
+
 		keyBindings = new KeyBinding[5];
-		
+
 		keyBindings[0] = new KeyBinding("key.menu.desc", Keyboard.KEY_NUMPAD0, "key.darkpowers.category");
 		keyBindings[1] = new KeyBinding("key.skill0.desc", Keyboard.KEY_U, "key.darkpowers.category");
 		keyBindings[2] = new KeyBinding("key.skill1.desc", Keyboard.KEY_I, "key.darkpowers.category");
 		keyBindings[3] = new KeyBinding("key.skill2.desc", Keyboard.KEY_O, "key.darkpowers.category");
 		keyBindings[4] = new KeyBinding("key.skill3.desc", Keyboard.KEY_P, "key.darkpowers.category");
-		
+
 		// register all the key bindings
 		for(int i = 0; i < keyBindings.length; ++i)
 		{
 			ClientRegistry.registerKeyBinding(keyBindings[i]);
 		}
-		
+
 	}
-	
+
 	@Override
 	public void postInit(FMLPostInitializationEvent e)
 	{
 		super.postInit(e);
-		
+
 		DarkPowers.logger.info("Client proxy post init");
-		
+
 		Minecraft mc = Minecraft.getMinecraft();
 		if(mc.entityRenderer.getClass().equals(EntityRenderer.class))
 		{
@@ -105,7 +107,7 @@ public class ClientProxy extends CommonProxy
 			DarkPowers.logger.warn("It cannot be replaced without affecting this mod!");
 		}
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onRenderOverlay(RenderGameOverlayEvent.Post event)
@@ -113,23 +115,23 @@ public class ClientProxy extends CommonProxy
 		if(event.type == ElementType.ALL)
 		{
 			EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-			
+
 			PlayerData data = (PlayerData) player.getExtendedProperties(PlayerData.IDENTIFIER);
 			if(data != null)
 			{
 				if(data.getRole() == DarkRole.MAGE || data.getRole() == DarkRole.DARKNESS)
 				{
 					if(!Minecraft.getMinecraft().gameSettings.showDebugInfo)
-					{						
+					{
 						if(guiSkills == null)
 							guiSkills = new GuiSkillOverlay(player);
-						
+
 						if(guiSkills.player!=player)
 						{
 							DarkPowers.logger.info("Change player of skill overlay from "+guiSkills.player+" to "+player);
 							guiSkills.player=player;
 						}
-						
+
 						guiSkills.render();
 					}
 					if(data.getRole() == DarkRole.MAGE || data.getRole() == DarkRole.DARKNESS)
@@ -139,7 +141,7 @@ public class ClientProxy extends CommonProxy
 						{
 							if(guiEnergyOverlay == null)
 								guiEnergyOverlay = new GuiEnergyOverlay(Minecraft.getMinecraft().thePlayer);
-							
+
 							guiEnergyOverlay.render();
 						}
 					}
@@ -147,7 +149,7 @@ public class ClientProxy extends CommonProxy
 			}
 		}
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent(
 		priority = EventPriority.NORMAL,
@@ -156,7 +158,7 @@ public class ClientProxy extends CommonProxy
 	{
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 		PlayerData data = (PlayerData) player.getExtendedProperties(PlayerData.IDENTIFIER);
-		
+
 		if(keyBindings[0].isPressed())
 		{
 			if(data.getRole() == DarkRole.MAGE || data.getRole() == DarkRole.DARKNESS)
@@ -191,13 +193,13 @@ public class ClientProxy extends CommonProxy
 			}
 		}
 	}
-	
+
 	@Override
 	public EntityPlayer getPlayerEntity(MessageContext ctx)
 	{
 		return (ctx.side.isClient() ? Minecraft.getMinecraft().thePlayer : ctx.getServerHandler().playerEntity);
 	}
-	
+
 	@SubscribeEvent
 	public void onTick(TickEvent.PlayerTickEvent event)
 	{

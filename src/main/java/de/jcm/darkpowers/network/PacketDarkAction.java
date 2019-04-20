@@ -5,10 +5,13 @@ import de.jcm.darkpowers.DarkSkills;
 import de.jcm.darkpowers.DarkSkills.Type;
 import de.jcm.darkpowers.PlayerData;
 import de.jcm.darkpowers.PlayerData.DarkRole;
+import de.jcm.darkpowers.client.ClientEffect;
+import de.jcm.darkpowers.entity.projectile.EntityBlackArrow;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
+import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 
@@ -20,23 +23,25 @@ public class PacketDarkAction implements IMessage
 	{
 		USE_SKILL,
 		UNLOCK_SKILL,
-		EQUIP_SKILL
+		EQUIP_SKILL,
+		RAYTRACE_BLOCK,
+		RAYTRACE_MISS
 	}
 
 	private DarkAction action;
 	private int[] arguments;
-	
+
 	public PacketDarkAction()
 	{
-		
+
 	}
-	
+
 	public PacketDarkAction(DarkAction action, int... arguments)
 	{
 		this.action = action;
 		this.arguments = arguments;
 	}
-	
+
 	@Override
 	public void fromBytes(ByteBuf buf)
 	{
@@ -59,12 +64,12 @@ public class PacketDarkAction implements IMessage
 			buf.writeInt(arguments[i]);
 		}
 	}
-	
+
 	public static class Handler extends AbstractServerMessageHandler<PacketDarkAction>
 	{
 		@Override
 		public IMessage handleServerMessage(EntityPlayer player, PacketDarkAction message, MessageContext ctx)
-		{			
+		{
 			if(message.action == DarkAction.UNLOCK_SKILL)
 			{
 				int fragmentCount = 0;
@@ -79,10 +84,10 @@ public class PacketDarkAction implements IMessage
 						}
 					}
 				}
-				
+
 				DarkSkills skill = DarkSkills.values()[message.arguments[0]];
-				PlayerData data = (PlayerData) player.getExtendedProperties(PlayerData.IDENTIFIER);
-				
+				PlayerData data = PlayerData.get(player);
+
 				if((skill.isSpecial() && data.getRole()==DarkRole.DARKNESS) || !skill.isSpecial())
 				{
 					if(!data.getUnlocks().contains(skill))
@@ -112,7 +117,7 @@ public class PacketDarkAction implements IMessage
 			}
 			if(message.action == DarkAction.USE_SKILL)
 			{
-				PlayerData data = (PlayerData) player.getExtendedProperties(PlayerData.IDENTIFIER);
+				PlayerData data = PlayerData.get(player);
 				DarkSkills skill = data.getSelectedSkills()[message.arguments[0]];
 				if(skill.getType()==Type.ACTIVE)
 				{
@@ -138,14 +143,14 @@ public class PacketDarkAction implements IMessage
 			}
 			if(message.action == DarkAction.EQUIP_SKILL)
 			{
-				PlayerData data = (PlayerData) player.getExtendedProperties(PlayerData.IDENTIFIER);
+				PlayerData data = PlayerData.get(player);
 				int slot = message.arguments[0];
 				DarkSkills skill = null;
 				if(message.arguments[1]>=0 && message.arguments[1]<DarkSkills.values().length)
 				{
 					skill = DarkSkills.values()[message.arguments[1]];
 				}
-				
+
 				if(data.getUnlocks().contains(skill) || skill==null)
 				{
 					if(skill==null || skill.getType()==Type.ACTIVE)
@@ -180,7 +185,61 @@ public class PacketDarkAction implements IMessage
 					}
 				}
 			}
-			
+			if(message.action==DarkAction.RAYTRACE_BLOCK)
+			{
+				PlayerData data = PlayerData.get(player);
+				if(data.getRaytraceTicks()>0)
+				{
+					data.setRaytraceTicks(0);
+					double x = message.arguments[0]+0.5;
+					double y = message.arguments[1];
+					double z = message.arguments[2]+0.5;
+					int face = message.arguments[3];
+
+					switch(face)
+					{
+						case 0:
+							y--;
+							break;
+						case 1:
+							y++;
+							break;
+						case 2:
+							z--;
+							break;
+						case 3:
+							z++;
+							break;
+						case 4:
+							x--;
+							break;
+						case 5:
+							x++;
+							break;
+						default:
+							break;
+					}
+
+					EntityBlackArrow arrow = new EntityBlackArrow(player.worldObj, player, x, y, z);
+					player.worldObj.spawnEntityInWorld(arrow);
+
+					DarkPowers.wrapper.sendToAllAround(new PacketClientEffect(player, ClientEffect.BLACK_ARROW, arrow.getEntityId()),
+						new TargetPoint(player.dimension, player.posX, player.posY, player.posZ, 100));
+
+					data.setEnergy(data.getEnergy()-DarkSkills.BLACK_ARROW.getEnergyCost());
+					data.setCooldown(DarkSkills.BLACK_ARROW, DarkSkills.BLACK_ARROW.getCooldown());
+					data.sync();
+				}
+			}
+			if(message.action==DarkAction.RAYTRACE_MISS)
+			{
+				PlayerData data = PlayerData.get(player);
+				if(data.getRaytraceTicks()>0)
+				{
+					data.setRaytraceTicks(0);
+				}
+			}
+
 			return null;
 		}
 	}
