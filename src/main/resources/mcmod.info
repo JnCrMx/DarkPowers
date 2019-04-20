@@ -8,7 +8,7 @@
   "url": "",
   "updateUrl": "",
   "authorList": ["JCM"],
-  "credits": "",
+  "credits": "Xedos/Cynder for a lot of great ideas and even more motivation.",
   "logoFile": "",
   "screenshots": [],
   "dependencies": ["RenderPlayerAPI"]
