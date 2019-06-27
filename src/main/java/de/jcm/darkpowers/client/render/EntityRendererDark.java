@@ -6,6 +6,7 @@ import de.jcm.darkpowers.ClientProxy;
 import de.jcm.darkpowers.DarkPowers;
 import de.jcm.darkpowers.DarkSkills;
 import de.jcm.darkpowers.PlayerData;
+import de.jcm.darkpowers.block.DarkBlocks;
 import de.jcm.darkpowers.tileentity.TileEntityDarkDome;
 
 import net.minecraft.client.Minecraft;
@@ -87,7 +88,7 @@ public class EntityRendererDark extends EntityRenderer
 		}
 		if(!renderDark && proxy.renderDome!=null)
 		{
-			if(world.getBlock(proxy.renderDome.xCoord, proxy.renderDome.yCoord, proxy.renderDome.zCoord)==DarkPowers.blockDarkDome)
+			if(world.getBlock(proxy.renderDome.xCoord, proxy.renderDome.yCoord, proxy.renderDome.zCoord)==DarkBlocks.blockDarkDome)
 			{
 				if(TileEntityDarkDome.checkInDome(proxy.renderDome, player))
 				{

@@ -7,6 +7,7 @@ import de.jcm.darkpowers.PlayerData;
 import de.jcm.darkpowers.PlayerData.DarkRole;
 import de.jcm.darkpowers.client.ClientEffect;
 import de.jcm.darkpowers.entity.projectile.EntityBlackArrow;
+import de.jcm.darkpowers.item.DarkItems;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -78,7 +79,7 @@ public class PacketDarkAction implements IMessage
 					ItemStack stack = player.inventory.mainInventory[i];
 					if(stack!=null)
 					{
-						if(stack.getItem()==DarkPowers.itemDarkIngot)
+						if(stack.getItem()==DarkItems.itemDarkIngot)
 						{
 							fragmentCount+=stack.stackSize;
 						}
@@ -97,7 +98,7 @@ public class PacketDarkAction implements IMessage
 							if(skill.getType()==Type.ACTIVE)
 							{
 								for(int i=0;i<skill.getUnlockCost();i++)
-									player.inventory.consumeInventoryItem(DarkPowers.itemDarkIngot);
+									player.inventory.consumeInventoryItem(DarkItems.itemDarkIngot);
 								data.getUnlocks().add(skill);
 								data.sync();
 							}
@@ -106,7 +107,7 @@ public class PacketDarkAction implements IMessage
 								if(skill.getCallback().call(player))
 								{
 									for(int i=0;i<skill.getUnlockCost();i++)
-										player.inventory.consumeInventoryItem(DarkPowers.itemDarkIngot);
+										player.inventory.consumeInventoryItem(DarkItems.itemDarkIngot);
 									data.getUnlocks().add(skill);
 									data.sync();
 								}

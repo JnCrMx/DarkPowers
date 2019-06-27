@@ -1,5 +1,6 @@
 package de.jcm.darkpowers;
 
+import de.jcm.darkpowers.block.DarkBlocks;
 import de.jcm.darkpowers.client.ClientEffect;
 import de.jcm.darkpowers.network.PacketClientEffect;
 import de.jcm.darkpowers.tileentity.TileEntityDarkDome;
@@ -98,7 +99,7 @@ public enum DarkSkills
 				int y = (int)player.posY+9;
 				int z = (int)player.posZ;
 
-				player.worldObj.setBlock(x, y, z, DarkPowers.blockDarkDome);
+				player.worldObj.setBlock(x, y, z, DarkBlocks.blockDarkDome);
 
 				TileEntityDarkDome te = (TileEntityDarkDome) player.worldObj.getTileEntity(x, y, z);
 				te.owner = player.getUniqueID();
